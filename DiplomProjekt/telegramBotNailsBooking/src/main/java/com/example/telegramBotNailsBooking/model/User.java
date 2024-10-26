@@ -51,7 +51,8 @@ public class User {
 
     public enum Role {
         CLIENT,
-        ADMIN
+        ADMIN,
+        MASTER
     }
 
     @PrePersist

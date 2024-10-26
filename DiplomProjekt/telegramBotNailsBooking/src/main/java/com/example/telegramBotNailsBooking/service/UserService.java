@@ -13,7 +13,9 @@ import java.time.LocalDateTime;
 @Service
 public class UserService {
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
+    @Autowired
     private final UserRepository userRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -22,13 +24,24 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User registerUser(String firstName, String lastName, String username, String rawPassword, Long chatId, String phoneNumber) {
+    public User findUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    public void setAdminRole(User user) {
+        user.setRole(User.Role.ADMIN);
+        userRepository.save(user);
+    }
+
+    public boolean isAdmin(Long chatId) {
+        User user = userRepository.findByChatId(chatId);
+        return user != null && user.getRole() == User.Role.ADMIN;
+    }
+
+    public User registerUser(String firstName, String lastName, String username, String rawPassword, String phoneNumber) {
         // Проверка на существование пользователя по уникальным полям
         if (userRepository.findByUsername(username) != null) {
             throw new IllegalArgumentException("Username already exists!"); // Возвращаем ошибку, если имя пользователя уже существует
-        }
-        if (userRepository.findByChatId(chatId) != null) {
-            throw new IllegalArgumentException("User with this chat ID already exists!"); // Возвращаем ошибку, если чат ID уже существует
         }
         if (userRepository.findByPhoneNumber(phoneNumber) != null) {
             throw new IllegalArgumentException("User with this phone number already exists!"); // Возвращаем ошибку, если телефонный номер уже существует
@@ -39,7 +52,6 @@ public class UserService {
         user.setLastName(lastName);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(rawPassword)); // Хешируем пароль
-        user.setChatId(chatId);
         user.setPhoneNumber(phoneNumber);
         user.setRole(User.Role.CLIENT); // Задаем роль по умолчанию
 
@@ -47,6 +59,10 @@ public class UserService {
         return userRepository.save(user); // Сохраняем пользователя
     }
 
+    public void authenticateUser(Long chatId) {
+        // Логика для аутентификации пользователя (например, обновление сессии)
+        log.info("User with chat ID {} authenticated successfully", chatId);
+    }
 
     public User loginUser(String username, String rawPassword) {
         // Ищем пользователя по имени
@@ -70,5 +86,3 @@ public class UserService {
         return user;
     }
 }
-
-

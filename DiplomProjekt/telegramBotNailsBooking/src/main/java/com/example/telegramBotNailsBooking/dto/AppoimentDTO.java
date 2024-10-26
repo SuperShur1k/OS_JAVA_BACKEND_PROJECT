@@ -4,11 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReviewDTO {
+public class AppoimentDTO {
     private Long id;
-    private String username;
-    private String reviewText;
+    private Long masterId;
+    private LocalDateTime dateTime;
+    private String serviceName;
 }
