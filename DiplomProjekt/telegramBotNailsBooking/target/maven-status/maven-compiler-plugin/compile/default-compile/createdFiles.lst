@@ -1,8 +1,0 @@
-com\example\telegramBotNailsBooking\TelegramBotNailsBookingApplication.class
-com\example\telegramBotNailsBooking\bot\BotInitializer.class
-com\example\telegramBotNailsBooking\repository\UserRepository.class
-com\example\telegramBotNailsBooking\model\User$Role.class
-com\example\telegramBotNailsBooking\bot\BotController.class
-com\example\telegramBotNailsBooking\service\UserService.class
-com\example\telegramBotNailsBooking\model\User.class
-com\example\telegramBotNailsBooking\bot\BotConfig.class
